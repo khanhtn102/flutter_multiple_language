@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:i18n_extension/i18n_widget.dart';
-import 'package:i18n_localizations/i18n_localizations.dart';
-import 'package:i18n_localizations/i18n_localizations_delegate.dart';
+
+import 'main.i18n.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final I18nLocalizationsDelegate i18n = I18nLocalizationsDelegate(
-      supportedLocales: [Locale('en'), Locale('vi')], pathFile: 'lang');
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -21,16 +18,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      supportedLocales: i18n.supportedLocales,
+      supportedLocales: [Locale('en'), Locale('vi')],
       localizationsDelegates: [
-        i18n,
         GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
       ],
-      localeResolutionCallback: (Locale locale, supportedLocales) {
-        return i18n.localeResolutionCallback(locale);
-      },
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: I18n(
+        child: MyHomePage(title: 'Flutter Demo Home Page'),
+      ),
     );
   }
 }
@@ -110,7 +106,7 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
-            Text(I18nLocalizations.translate(context, "Hello")),
+            Text("Hello".i18n),
             MaterialButton(
               color: Colors.blue,
               child: Text("English"),
